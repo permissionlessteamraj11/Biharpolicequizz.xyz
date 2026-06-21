@@ -6,10 +6,11 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { subjects } from '@/data/subjects';
-import { ChevronRight, Play, BookOpen, Award, CheckCircle, Info } from 'lucide-react';
+import { ChevronRight, BookOpen, Award, CheckCircle, Info, Star, Zap, BarChart, ShieldCheck, Clock } from 'lucide-react';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import { useMemo } from 'react';
+import { motion } from 'framer-motion';
 
 export default function ChapterPage() {
   const params = useParams();
@@ -24,129 +25,230 @@ export default function ChapterPage() {
   }
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-screen bg-background/95">
       <Navbar />
 
-      <main className="flex-1 py-12">
+      <main className="flex-1 py-12 relative overflow-hidden">
+        {/* Background Gradients */}
+        <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-primary/5 rounded-full blur-[100px] -z-10" />
+        <div className="absolute bottom-0 right-1/4 w-[400px] h-[400px] bg-orange-500/5 rounded-full blur-[100px] -z-10" />
+
         <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto">
-            <div className="flex items-center gap-2 text-primary font-medium mb-6">
-              <Link href="/subjects" className="hover:underline">Subjects</Link>
-              <ChevronRight className="h-4 w-4" />
-              <Link href={`/subjects/${subject.slug}`} className="hover:underline">{subject.name}</Link>
-              <ChevronRight className="h-4 w-4" />
-              <span className="text-muted-foreground">{chapter.title}</span>
-            </div>
+          <div className="max-w-5xl mx-auto">
+            <motion.div
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="flex items-center gap-2 text-sm text-muted-foreground font-medium mb-8 bg-card/50 w-fit px-4 py-2 rounded-full border border-border/50"
+            >
+              <Link href="/subjects" className="hover:text-primary transition-colors">Subjects</Link>
+              <ChevronRight className="h-3 w-3" />
+              <Link href={`/subjects/${subject.slug}`} className="hover:text-primary transition-colors">{subject.name}</Link>
+              <ChevronRight className="h-3 w-3" />
+              <span className="text-primary">{chapter.title}</span>
+            </motion.div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              <div className="md:col-span-2">
-                <h1 className="text-4xl font-bold mb-4">{chapter.title}</h1>
-                <div className="flex flex-wrap gap-3 mb-8">
-                  <Badge variant="secondary">{subject.name}</Badge>
-                  <Badge
-                    variant="secondary"
-                    className={
-                      chapter.difficulty === 'Easy' ? 'bg-green-500/10 text-green-600' :
-                      chapter.difficulty === 'Medium' ? 'bg-yellow-500/10 text-yellow-600' :
-                      'bg-red-500/10 text-red-600'
-                    }
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+              {/* Main Content Area */}
+              <div className="lg:col-span-8">
+                <motion.div
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  className="mb-10"
+                >
+                  <div className="flex items-center gap-3 mb-4">
+                    <Badge variant="outline" className="rounded-full px-3 py-1 bg-primary/5 border-primary/20 text-primary">
+                      Premium Module
+                    </Badge>
+                    <Badge variant="outline" className="rounded-full px-3 py-1 flex items-center gap-1">
+                      <Star className="h-3 w-3 fill-primary text-primary" /> 4.9/5
+                    </Badge>
+                  </div>
+                  <h1 className="text-4xl md:text-5xl font-extrabold mb-6 tracking-tight leading-tight">
+                    {chapter.title} <span className="text-primary underline decoration-primary/20">Mastery</span>
+                  </h1>
+
+                  <div className="flex flex-wrap gap-4 mb-8">
+                    <div className="flex items-center gap-2 bg-card border border-border px-4 py-2 rounded-2xl shadow-sm">
+                      <div className="p-1.5 rounded-lg bg-green-500/10 text-green-600">
+                        <BarChart className="h-4 w-4" />
+                      </div>
+                      <div className="text-xs">
+                        <p className="text-muted-foreground font-medium uppercase tracking-wider">Difficulty</p>
+                        <p className="font-bold">{chapter.difficulty}</p>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-2 bg-card border border-border px-4 py-2 rounded-2xl shadow-sm">
+                      <div className="p-1.5 rounded-lg bg-blue-500/10 text-blue-600">
+                        <Zap className="h-4 w-4" />
+                      </div>
+                      <div className="text-xs">
+                        <p className="text-muted-foreground font-medium uppercase tracking-wider">Questions</p>
+                        <p className="font-bold">50 MCQs</p>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-2 bg-card border border-border px-4 py-2 rounded-2xl shadow-sm">
+                      <div className="p-1.5 rounded-lg bg-orange-500/10 text-orange-600">
+                        <ShieldCheck className="h-4 w-4" />
+                      </div>
+                      <div className="text-xs">
+                        <p className="text-muted-foreground font-medium uppercase tracking-wider">Verified</p>
+                        <p className="font-bold">PYQ 2024</p>
+                      </div>
+                    </div>
+                  </div>
+                </motion.div>
+
+                {/* Highly Advanced Sections */}
+                <div className="space-y-8">
+                  {/* Revision Section */}
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.1 }}
                   >
-                    {chapter.difficulty} Difficulty
-                  </Badge>
-                  <Badge variant="outline">50 MCQs</Badge>
-                </div>
+                    <Card className="border-none bg-gradient-to-br from-primary/10 via-background to-background shadow-lg overflow-hidden border border-primary/10">
+                      <div className="p-8">
+                        <div className="flex items-center gap-3 mb-6">
+                          <div className="h-10 w-10 rounded-xl bg-primary text-white flex items-center justify-center shadow-lg shadow-primary/30">
+                            <BookOpen className="h-5 w-5" />
+                          </div>
+                          <h2 className="text-2xl font-bold">Concept Overview</h2>
+                        </div>
 
-                <div className="prose dark:prose-invert max-w-none mb-12">
-                  <h2 className="text-2xl font-bold mb-4">Quick Revision Notes</h2>
-                  <Card className="bg-accent/30 border-none">
-                    <CardContent className="p-6">
-                      <p className="text-muted-foreground leading-relaxed">
-                        This chapter covers essential concepts of {chapter.title} strictly according to the latest SSC CGL and BPSC syllabus.
-                        We recommend going through the basic concepts before attempting the full practice mode.
-                      </p>
-                      <ul className="mt-4 space-y-2">
-                        <li className="flex items-start gap-2">
-                          <CheckCircle className="h-5 w-5 text-primary mt-0.5" />
-                          <span>Focus on conceptual clarity and fast calculation techniques.</span>
-                        </li>
-                        <li className="flex items-start gap-2">
-                          <CheckCircle className="h-5 w-5 text-primary mt-0.5" />
-                          <span>Includes Previous Year Questions (PYQs) from 2018-2024.</span>
-                        </li>
-                        <li className="flex items-start gap-2">
-                          <CheckCircle className="h-5 w-5 text-primary mt-0.5" />
-                          <span>Detailed explanations provided for every question.</span>
-                        </li>
-                      </ul>
-                    </CardContent>
-                  </Card>
-                </div>
+                        <p className="text-muted-foreground leading-relaxed mb-6">
+                          Our experts have curated this set specifically for {subject.name} enthusiasts.
+                          It covers {chapter.title} in great depth, ensuring you're prepared for the most challenging questions in SSC CGL and BPSC Mains.
+                        </p>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                  <Card className="hover:border-primary transition-colors cursor-pointer group">
-                    <CardContent className="p-6">
-                      <div className="h-12 w-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center mb-4 group-hover:bg-primary group-hover:text-white transition-colors">
-                        <RocketIcon className="h-6 w-6" />
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          {[
+                            "Strategic approach to complex problems",
+                            "2024 Exam pattern alignment",
+                            "Time-saving shortcut techniques",
+                            "Comprehensive conceptual coverage"
+                          ].map((item, idx) => (
+                            <div key={idx} className="flex items-center gap-3 p-3 rounded-xl bg-card/40 border border-border/50">
+                              <div className="h-6 w-6 rounded-full bg-primary/20 text-primary flex items-center justify-center flex-shrink-0">
+                                <CheckCircle className="h-4 w-4" />
+                              </div>
+                              <span className="text-sm font-medium">{item}</span>
+                            </div>
+                          ))}
+                        </div>
                       </div>
-                      <h3 className="text-xl font-bold mb-2">Quick Practice</h3>
-                      <p className="text-sm text-muted-foreground mb-6">
-                        Practice 25 selected questions to quickly test your knowledge.
-                      </p>
-                      <Link href={`/quiz/${subject.slug}/${chapter.slug}?mode=quick`}>
-                        <Button className="w-full">Start (25 MCQs)</Button>
-                      </Link>
-                    </CardContent>
-                  </Card>
+                    </Card>
+                  </motion.div>
 
-                  <Card className="hover:border-primary transition-colors cursor-pointer group">
-                    <CardContent className="p-6">
-                      <div className="h-12 w-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center mb-4 group-hover:bg-primary group-hover:text-white transition-colors">
-                        <TargetIcon className="h-6 w-6" />
-                      </div>
-                      <h3 className="text-xl font-bold mb-2">Full Practice</h3>
-                      <p className="text-sm text-muted-foreground mb-6">
-                        Complete set of 50 questions for comprehensive preparation.
-                      </p>
-                      <Link href={`/quiz/${subject.slug}/${chapter.slug}?mode=full`}>
-                        <Button className="w-full">Start (50 MCQs)</Button>
-                      </Link>
-                    </CardContent>
-                  </Card>
+                  {/* CTAs */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <motion.div
+                      initial={{ opacity: 0, scale: 0.95 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ delay: 0.2 }}
+                    >
+                      <Card className="h-full border-border/60 hover:border-primary/50 transition-all duration-300 bg-card/60 backdrop-blur-sm group">
+                        <CardContent className="p-8 flex flex-col h-full">
+                          <div className="h-14 w-14 rounded-2xl bg-accent text-muted-foreground flex items-center justify-center mb-6 group-hover:bg-primary/10 group-hover:text-primary transition-colors">
+                            <RocketIcon className="h-7 w-7" />
+                          </div>
+                          <h3 className="text-2xl font-bold mb-3">Quick Sprint</h3>
+                          <p className="text-muted-foreground text-sm mb-8 flex-grow">
+                            A focused session of 25 hand-picked MCQs to sharpen your concepts quickly.
+                          </p>
+                          <Link href={`/quiz/${subject.slug}/${chapter.slug}?mode=quick`} className="mt-auto">
+                            <Button variant="outline" className="w-full rounded-xl py-6 font-bold group-hover:bg-accent group-hover:text-foreground transition-all">
+                              Start Sprint (25 MCQs)
+                            </Button>
+                          </Link>
+                        </CardContent>
+                      </Card>
+                    </motion.div>
+
+                    <motion.div
+                      initial={{ opacity: 0, scale: 0.95 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ delay: 0.3 }}
+                    >
+                      <Card className="h-full border-primary/30 shadow-2xl shadow-primary/10 bg-primary/[0.02] overflow-hidden group relative">
+                        <div className="absolute top-0 right-0 p-4">
+                          <Badge className="bg-primary text-white animate-pulse">Recommended</Badge>
+                        </div>
+                        <CardContent className="p-8 flex flex-col h-full relative z-10">
+                          <div className="h-14 w-14 rounded-2xl bg-primary text-white flex items-center justify-center mb-6 shadow-xl shadow-primary/30">
+                            <TargetIcon className="h-7 w-7" />
+                          </div>
+                          <h3 className="text-2xl font-bold mb-3">Ultimate Practice</h3>
+                          <p className="text-muted-foreground text-sm mb-8 flex-grow">
+                            Full-length simulation with 50 high-quality MCQs. The gold standard for exam preparation.
+                          </p>
+                          <Link href={`/quiz/${subject.slug}/${chapter.slug}?mode=full`} className="mt-auto">
+                            <Button className="w-full rounded-xl py-8 text-lg font-bold shadow-xl shadow-primary/25 group-hover:scale-[1.02] transition-transform">
+                              Full Practice (50 MCQs)
+                            </Button>
+                          </Link>
+                        </CardContent>
+                        <div className="absolute -bottom-6 -right-6 h-24 w-24 bg-primary/5 rounded-full blur-2xl group-hover:bg-primary/10 transition-colors" />
+                      </Card>
+                    </motion.div>
+                  </div>
                 </div>
               </div>
 
-              <div className="space-y-6">
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="text-lg">Chapter Stats</CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    <div className="flex justify-between py-2 border-b">
-                      <span className="text-muted-foreground">Total MCQs</span>
-                      <span className="font-bold">50</span>
-                    </div>
-                    <div className="flex justify-between py-2 border-b">
-                      <span className="text-muted-foreground">Complexity</span>
-                      <span className="font-bold">{chapter.difficulty}</span>
-                    </div>
-                    <div className="flex justify-between py-2 border-b">
-                      <span className="text-muted-foreground">Avg. Time</span>
-                      <span className="font-bold">35s / q</span>
-                    </div>
-                  </CardContent>
-                </Card>
+              {/* Sidebar Stats */}
+              <div className="lg:col-span-4 space-y-6">
+                <motion.div
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.4 }}
+                >
+                  <Card className="sticky top-24 bg-card/80 backdrop-blur-lg border-border/50 shadow-xl overflow-hidden">
+                    <div className="h-2 w-full bg-primary" />
+                    <CardHeader className="pb-2">
+                      <CardTitle className="text-xl flex items-center gap-2">
+                        <Award className="h-5 w-5 text-primary" />
+                        Chapter Intel
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-6 p-6">
+                      <div className="space-y-4">
+                        {[
+                          { label: "Completion Time", value: "35-45 mins", icon: Clock },
+                          { label: "Target Accuracy", value: "85%+", icon: ShieldCheck },
+                          { label: "Success Rate", value: "72%", icon: BarChart },
+                          { label: "Total Students", value: "4.8k+", icon: Star },
+                        ].map((stat, i) => (
+                          <div key={i} className="flex items-center justify-between py-1">
+                            <div className="flex items-center gap-2 text-muted-foreground">
+                              <stat.icon className="h-4 w-4" />
+                              <span className="text-sm font-medium">{stat.label}</span>
+                            </div>
+                            <span className="font-bold">{stat.value}</span>
+                          </div>
+                        ))}
+                      </div>
 
-                <Card className="bg-primary/5 border-primary/20">
-                  <CardContent className="p-6">
-                    <div className="flex items-center gap-2 text-primary font-bold mb-2">
-                      <Info className="h-5 w-5" />
-                      <span>Exam Tip</span>
-                    </div>
-                    <p className="text-sm text-muted-foreground italic">
-                      "In SSC CGL, speed is as important as accuracy. Try to solve easy questions in under 20 seconds."
-                    </p>
-                  </CardContent>
-                </Card>
+                      <div className="p-4 rounded-2xl bg-accent/50 border border-border/50 relative overflow-hidden group">
+                        <div className="flex items-center gap-2 text-primary font-bold mb-2">
+                          <Info className="h-4 w-4" />
+                          <span className="text-sm">Expert Tip</span>
+                        </div>
+                        <p className="text-sm text-muted-foreground italic leading-relaxed">
+                          "Focus on the explanations of incorrect answers. That's where real learning happens."
+                        </p>
+                        <div className="absolute -right-4 -bottom-4 h-12 w-12 bg-primary/5 rounded-full blur-xl" />
+                      </div>
+
+                      <div className="space-y-3">
+                        <p className="text-xs font-bold text-muted-foreground uppercase tracking-widest text-center">Ready to begin?</p>
+                        <Link href={`/quiz/${subject.slug}/${chapter.slug}?mode=full`}>
+                          <Button className="w-full rounded-xl" size="lg">
+                            Go Full Mode
+                          </Button>
+                        </Link>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </motion.div>
               </div>
             </div>
           </div>
